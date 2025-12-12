@@ -1,0 +1,156 @@
+[
+  {
+    "page": 8,
+    "type": "img",
+    "rect": [
+      83,
+      124,
+      514,
+      714
+    ],
+    "new_rect": [
+      83,
+      124,
+      514,
+      714
+    ],
+    "package_type": "BGA",
+    "source": "manual",
+    "part_content": [
+      {
+        "part_name": "BGA",
+        "page": 8,
+        "rect": [
+          102,
+          130,
+          368,
+          388
+        ],
+        "new_rect": [
+          102,
+          130,
+          368,
+          388
+        ]
+      },
+      {
+        "part_name": "Top",
+        "page": 8,
+        "rect": [
+          146,
+          490,
+          316,
+          698
+        ],
+        "new_rect": [
+          146,
+          490,
+          316,
+          698
+        ]
+      },
+      {
+        "part_name": "Side",
+        "page": 8,
+        "rect": [
+          364,
+          462,
+          448,
+          696
+        ],
+        "new_rect": [
+          364,
+          462,
+          448,
+          696
+        ]
+      },
+      {
+        "part_name": "Form",
+        "page": 7,
+        "rect": [
+          305,
+          141,
+          488,
+          401
+        ],
+        "new_rect": [
+          305,
+          141,
+          488,
+          401
+        ]
+      }
+    ],
+    "reco_content": null
+  },
+  {
+    "page": 9,
+    "type": "img",
+    "rect": [
+      82,
+      124,
+      510,
+      729
+    ],
+    "new_rect": [
+      82,
+      124,
+      510,
+      729
+    ],
+    "package_type": "BGA",
+    "source": "manual",
+    "part_content": [
+      {
+        "part_name": "BGA",
+        "page": 9,
+        "rect": [
+          100,
+          129,
+          380,
+          414
+        ],
+        "new_rect": [
+          100,
+          129,
+          380,
+          414
+        ]
+      },
+      {
+        "part_name": "Top",
+        "page": 9,
+        "rect": [
+          144,
+          477,
+          318,
+          720
+        ],
+        "new_rect": [
+          144,
+          477,
+          318,
+          720
+        ]
+      },
+      {
+        "part_name": "Side",
+        "page": 9,
+        "rect": [
+          362,
+          442,
+          449,
+          711
+        ],
+        "new_rect": [
+          362,
+          442,
+          449,
+          711
+        ]
+      }
+    ],
+    "reco_content": null
+  }
+]
