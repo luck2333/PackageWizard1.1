@@ -4331,7 +4331,7 @@ def get_serial(top_serial_numbers_data, bottom_serial_numbers_data):
     print('nx', max_nx, 'ny', max_ny)
     return max_nx, max_ny
 
-def get_QFP_parameter_list(top_ocr_data, bottom_ocr_data, side_ocr_data, detailed_ocr_data, body_x, body_y):
+def get_BGA_parameter_list(top_ocr_data, bottom_ocr_data, side_ocr_data, detailed_ocr_data, body_x, body_y):
     '''
     D/E 10~35
     D1/E1
@@ -4806,7 +4806,7 @@ def find_pin_num_pin_1(serial_numbers_data, serial_letters_data, serial_numbers,
 
     return pin_num_x_serial, pin_num_y_serial, pin_1_location
 
-def get_QFP_body(yolox_pairs_top, top_yolox_pairs_length, yolox_pairs_bottom, bottom_yolox_pairs_length, top_border, bottom_border, top_ocr_data, bottom_ocr_data):
+def get_body(yolox_pairs_top, top_yolox_pairs_length, yolox_pairs_bottom, bottom_yolox_pairs_length, top_border, bottom_border, top_ocr_data, bottom_ocr_data):
     '''
     # yolox_pairs_top,np.二维数组（，11）[pairs_x1_y1_x2_y2,标注x1_y1_x2_y2，max,medium,min]
     # top_yolox_pairs_length,np.二维数组（，13）[pairs_x1_y1_x2_y2,引线1_x1_y1_x2_y2,引线2_x1_y1_x2_y2,两引线距离]

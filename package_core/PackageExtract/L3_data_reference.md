@@ -47,7 +47,7 @@ OCR 相关结果在 L3 中以 `top_ocr_data / bottom_ocr_data / side_ocr_data / 
 - `side_ocr_data`
 - `detailed_ocr_data`
 
-`get_QFP_parameter_list` 会遍历这些 OCR 列表，根据 `max_medium_min` 的区间范围将标注分配到不同参数的 `maybe_data` 中，同时也会参考 `Absolutely` 与 `key_info`（例如 angle 或 Φ）进行额外的语义分配。【F:package_core/PackageExtract/get_pairs_data_present5_test.py†L4334-L4565】
+`get_BGA_parameter_list` 会遍历这些 OCR 列表，根据 `max_medium_min` 的区间范围将标注分配到不同参数的 `maybe_data` 中，同时也会参考 `Absolutely` 与 `key_info`（例如 angle 或 Φ）进行额外的语义分配。【F:package_core/PackageExtract/get_pairs_data_present5_test.py†L4334-L4565】
 
 ### 4.2 框与标尺线匹配结果
 
@@ -57,7 +57,7 @@ OCR 相关结果在 L3 中以 `top_ocr_data / bottom_ocr_data / side_ocr_data / 
 - `top_yolox_pairs_length` / `bottom_yolox_pairs_length`
 - `top_border` / `bottom_border`
 
-这些字段会被 `compute_qfp_parameters` 读取，用于调用 `get_QFP_body` 计算封装主体尺寸，从而辅助筛选 D/D1/E/E1 等参数范围。【F:package_core/PackageExtract/common_pipeline.py†L645-L691】
+这些字段会被 `compute_BGA_parameters` 读取，用于调用 `get_body` 计算封装主体尺寸，从而辅助筛选 D/D1/E/E1 等参数范围。【F:package_core/PackageExtract/common_pipeline.py†L645-L691】
 
 ### 4.3 序号提取结果
 
@@ -66,7 +66,7 @@ PIN 序号推断会先生成 `top_serial_numbers_data` 与 `bottom_serial_number
 - `top_serial_numbers_data`
 - `bottom_serial_numbers_data`
 
-这些字段在 `compute_qfp_parameters` 中通过 `get_serial` 计算出 `nx`/`ny`，然后影响 pitch 的推断流程。【F:package_core/PackageExtract/common_pipeline.py†L649-L710】
+这些字段在 `compute_BGA_parameters` 中通过 `get_serial` 计算出 `nx`/`ny`，然后影响 pitch 的推断流程。【F:package_core/PackageExtract/common_pipeline.py†L649-L710】
 
 ### 4.4 参数推理中最关键的 OCR 字段
 
@@ -76,7 +76,7 @@ PIN 序号推断会先生成 `top_serial_numbers_data` 与 `bottom_serial_number
 - `key_info`: 用来捕获 `Φ`、`±` 等符号，进而决定特殊参数归类。
 - `Absolutely`: 指示角度(`angle`)或 pin 直径(`pin_diameter`)等语义标签。
 
-这些字段在 `get_QFP_parameter_list` 中直接参与参数归类（如角度、Φ 参数、A/A1 等）。【F:package_core/PackageExtract/get_pairs_data_present5_test.py†L4334-L4565】
+这些字段在 `get_BGA_parameter_list` 中直接参与参数归类（如角度、Φ 参数、A/A1 等）。【F:package_core/PackageExtract/get_pairs_data_present5_test.py†L4334-L4565】
 
 ## 5. 使用建议（便于后续维护）
 

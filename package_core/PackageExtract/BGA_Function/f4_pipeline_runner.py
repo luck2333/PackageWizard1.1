@@ -126,7 +126,7 @@ def run_f4_pipeline(
     L3 = common_pipeline.match_pairs_with_text(L3, key)
     ## F4.9
     L3 = common_pipeline.finalize_pairs(L3)
-    parameters, nx, ny = common_pipeline.compute_qfp_parameters(L3)
+    parameters, nx, ny = common_pipeline.compute_BGA_parameters(L3)
 
     parameter_list = get_BGA_parameter_data(parameters, nx, ny)
     print(f"get_BGA_parameter_data 完成, 返回参数列表长度: {len(parameter_list)}")

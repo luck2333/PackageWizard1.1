@@ -17,7 +17,7 @@
   4. F4.6：`common_pipeline.enrich_pairs_with_lines` 识别标尺线并附加长度信息。
   5. F4.7：`match_triple_factor.match_arrow_pairs_with_yolox` 生成尺寸线与箭头配对后，再经 `common_pipeline.preprocess_pairs_and_text` 整理候选，并运行 `common_pipeline.run_svtr_ocr` 与 `normalize_ocr_candidates` 完成 OCR 推理与清洗。
   6. F4.8：`common_pipeline.extract_pin_serials` 识别 PIN 序号，`match_pairs_with_text` 将尺寸线重新与文本匹配。
-  7. F4.9：`common_pipeline.finalize_pairs` 清理配对结果，`compute_qfp_parameters` 生成参数结构，最后由 `function_tool.get_BGA_parameter_data` 产出列表。
+  7. F4.9：`common_pipeline.finalize_pairs` 清理配对结果，`compute_BGA_parameters` 生成参数结构，最后由 `function_tool.get_BGA_parameter_data` 产出列表。
 
 ## F4.6：尺寸线补齐
 - `enrich_pairs_with_lines(L3, image_root, test_mode)`：
@@ -36,11 +36,11 @@
 - `finalize_pairs(L3)`：调用 `get_better_data_2` 过滤/补全配对结果，并输出 `yolox_pairs_*` 供参数计算使用。
 
 ## F4.9：参数计算与输出
-- `compute_qfp_parameters(L3)`：
+- `compute_BGA_parameters(L3)`：
   - 依赖：`finalize_pairs` 产生的配对结果、引线长度、OCR 数据及边框信息。
   - 步骤：
     1. `get_serial` 推断 PIN 阵列尺寸 `nx/ny`。
-    2. `get_QFP_body` 根据引线与边框确定主体长宽（`body_x/body_y`）。
-    3. `get_QFP_parameter_list` 整合各视图候选，构建参数列表；若存在多个候选，结合 `get_QFP_high`、`get_QFP_pitch` 与 `resort_parameter_list_2` 缩小范围。
+    2. `get_body` 根据引线与边框确定主体长宽（`body_x/body_y`）。
+    3. `get_BGA_parameter_list` 整合各视图候选，构建参数列表；若存在多个候选，结合 `get_QFP_high`、`get_QFP_pitch` 与 `resort_parameter_list_2` 缩小范围。
   - 返回：参数列表与 `nx/ny`。
-- `function_tool.get_BGA_parameter_data(parameters, nx, ny)`：将 `compute_qfp_parameters` 的结果映射为最终的 BGA 参数列表（包含 PIN 间距、实体尺寸等），作为 `run_f4_pipeline` 的返回值。
+- `function_tool.get_BGA_parameter_data(parameters, nx, ny)`：将 `compute_BGA_parameters` 的结果映射为最终的 BGA 参数列表（包含 PIN 间距、实体尺寸等），作为 `run_f4_pipeline` 的返回值。

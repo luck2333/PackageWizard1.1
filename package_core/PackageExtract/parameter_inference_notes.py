@@ -27,10 +27,10 @@ INFERENCE_STEPS: List[InferenceStep] = [
             "body length/width (D/E), height (A/A1) and pitches (e)."
         ),
         functions=[
-            "get_QFP_parameter_list(top_ocr_data, bottom_ocr_data, side_ocr_data, detailed_ocr_data, body_x, body_y)",
+            "get_BGA_parameter_list(top_ocr_data, bottom_ocr_data, side_ocr_data, detailed_ocr_data, body_x, body_y)",
         ],
         references=[
-            "package_core/PackageExtract/get_pairs_data_present5_test.py::get_QFP_parameter_list",
+            "package_core/PackageExtract/get_pairs_data_present5_test.py::get_BGA_parameter_list",
         ],
     ),
     InferenceStep(
@@ -44,7 +44,7 @@ INFERENCE_STEPS: List[InferenceStep] = [
         ],
         references=[
             "package_core/PackageExtract/get_pairs_data_present5_test.py::get_QFP_high",
-            "package_core/PackageExtract/common_pipeline.py (compute_qfp_parameters)",
+            "package_core/PackageExtract/common_pipeline.py (compute_BGA_parameters)",
             "package_core/PackageExtract/QFP_extract.py / QFN_extract.py / SOP_extract.py / SON_extract.py",
         ],
     ),
@@ -58,7 +58,7 @@ INFERENCE_STEPS: List[InferenceStep] = [
         ],
         references=[
             "package_core/PackageExtract/get_pairs_data_present5_test.py::get_QFP_pitch",
-            "package_core/PackageExtract/common_pipeline.py (compute_qfp_parameters)",
+            "package_core/PackageExtract/common_pipeline.py (compute_BGA_parameters)",
         ],
     ),
     InferenceStep(
@@ -70,7 +70,7 @@ INFERENCE_STEPS: List[InferenceStep] = [
             "resort_parameter_list_2(QFP_parameter_list)",
         ],
         references=[
-            "package_core/PackageExtract/common_pipeline.py (compute_qfp_parameters)",
+            "package_core/PackageExtract/common_pipeline.py (compute_BGA_parameters)",
         ],
     ),
     InferenceStep(
@@ -79,14 +79,14 @@ INFERENCE_STEPS: List[InferenceStep] = [
             "After inference, candidates are written into the 19-row table by package-specific fill helpers."
         ),
         functions=[
-            "compute_qfp_parameters(...)",
+            "compute_BGA_parameters(...)",
             "get_serial(QFP_parameter_list)",
-            "get_QFP_body(top_ocr_data, bottom_ocr_data, detailed_ocr_data)",
+            "get_body(top_ocr_data, bottom_ocr_data, detailed_ocr_data)",
         ],
         references=[
-            "package_core/PackageExtract/common_pipeline.py::compute_qfp_parameters",
+            "package_core/PackageExtract/common_pipeline.py::compute_BGA_parameters",
             "package_core/PackageExtract/common_pipeline.py::get_serial",
-            "package_core/PackageExtract/common_pipeline.py::get_QFP_body",
+            "package_core/PackageExtract/common_pipeline.py::get_body",
             "package_core/PackageExtract/parameter_fillers.py (package-specific writers)",
         ],
     ),
