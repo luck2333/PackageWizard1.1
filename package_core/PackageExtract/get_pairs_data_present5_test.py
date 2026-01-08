@@ -1540,7 +1540,7 @@ def MPD(key, top_yolox_pairs, bottom_yolox_pairs, side_yolox_pairs, detailed_yol
         side_ocr_data = empty_list
     else:
         side_border = np.zeros((1, 4))
-        side_ocr_data = match_pairs_data(img_path, side_yolox_pairs, side_ocr_data, side_border)
+        # 跳过side视图的标注-标尺线匹配，直接保留原始side_ocr_data
         side_ocr_data = match_pairs_data_angle(img_path, side_angle_pairs, side_ocr_data, side_border)
     print("side_pairs_data\n", side_ocr_data)
     if key == 1:
@@ -1598,6 +1598,41 @@ def get_QFP_pitch(side_ocr_data, body_x, body_y, nx, ny):
             if (ny - 1) * 0.7 * body_y[0]['max_medium_min'][2] <= side_ocr_data[i]['max_medium_min'][0] <= body_y[0]['max_medium_min'][0]:
                 pitch_y = [side_ocr_data[i]]
     return pitch_x, pitch_y
+
+
+def infer_side_high_pair(side_ocr_data):
+    """
+    根据 side 视图推断高度参数：
+
+    1. 先检查是否存在标记为 Absolutely == 'high' 的候选，用最大者作为 A。
+    2. 否则直接按 max_medium_min[0] 由大到小排序，最大者为 A，次大者为 A1。
+    3. 仅当 side 视图存在至少两个候选时，才输出 A1。
+    """
+
+    if len(side_ocr_data) == 0:
+        return [], []
+
+    high_tagged = [c for c in side_ocr_data if c.get('Absolutely') == 'high']
+    high_tagged.sort(key=lambda x: x['max_medium_min'][0], reverse=True)
+
+    sorted_by_value = sorted(side_ocr_data, key=lambda x: x['max_medium_min'][0], reverse=True)
+
+    A_candidate = []
+    A1_candidate = []
+
+    if len(high_tagged) > 0:
+        A_candidate = [high_tagged[0]]
+    elif len(sorted_by_value) > 0:
+        A_candidate = [sorted_by_value[0]]
+
+    if len(sorted_by_value) > 1:
+        for cand in sorted_by_value[1:]:
+            if cand is not A_candidate[0]:
+                A1_candidate = [cand]
+                break
+
+    return A_candidate, A1_candidate
+
 def get_QFP_high(side_ocr_data):
     '''
     (1)
@@ -4354,6 +4389,7 @@ def get_QFP_parameter_list(top_ocr_data, bottom_ocr_data, side_ocr_data, detaile
     dic_θ3 = {'parameter_name': 'θ3', 'maybe_data': [], 'maybe_data_num': 0, 'possible': [], 'OK': 0}
     θ3_max = 16
     θ3_min = 11
+    dic_Φ = {'parameter_name': 'Φ', 'maybe_data': [], 'maybe_data_num': 0, 'possible': [], 'OK': 0}
 
     # dic_D2 = {'parameter_name': 'D2', 'maybe_data': [], 'possible': []}
     # dic_E2 = {'parameter_name': 'E2', 'maybe_data': [], 'possible': []}
@@ -4395,6 +4431,7 @@ def get_QFP_parameter_list(top_ocr_data, bottom_ocr_data, side_ocr_data, detaile
     QFP_parameter_list.append(dic_θ1)
     QFP_parameter_list.append(dic_θ2)
     QFP_parameter_list.append(dic_θ3)
+    QFP_parameter_list.append(dic_Φ)
 
     for i in range(len(top_ocr_data)):
         if D_min <= top_ocr_data[i]['max_medium_min'][2] and top_ocr_data[i]['max_medium_min'][0] <= D_max:
@@ -4428,6 +4465,11 @@ def get_QFP_parameter_list(top_ocr_data, bottom_ocr_data, side_ocr_data, detaile
             QFP_parameter_list[9]['maybe_data'].append(top_ocr_data[i])
             QFP_parameter_list[9]['maybe_data_num'] += 1
     for i in range(len(bottom_ocr_data)):
+        key_info = bottom_ocr_data[i].get('key_info', [])
+        has_phi = any(token == 'Φ' for group in key_info for token in group)
+        if has_phi or bottom_ocr_data[i].get('Absolutely') == 'pin_diameter':
+            QFP_parameter_list[17]['maybe_data'].append(bottom_ocr_data[i])
+            QFP_parameter_list[17]['maybe_data_num'] += 1
         if D_min <= bottom_ocr_data[i]['max_medium_min'][2] and bottom_ocr_data[i]['max_medium_min'][0] <= D_max:
             QFP_parameter_list[0]['maybe_data'].append(bottom_ocr_data[i])
             QFP_parameter_list[0]['maybe_data_num'] += 1
