@@ -240,7 +240,7 @@ def find_SON_parameter(L3):
 
     # (9)输出序号nx,ny和body_x、body_y
     nx, ny = get_serial(top_serial_numbers_data, bottom_serial_numbers_data)
-    body_x, body_y = get_QFP_body(yolox_pairs_top, top_yolox_pairs_length, yolox_pairs_bottom,
+    body_x, body_y = get_body(yolox_pairs_top, top_yolox_pairs_length, yolox_pairs_bottom,
                                   bottom_yolox_pairs_length, top_border, bottom_border, top_ocr_data,
                                   bottom_ocr_data)
     # (10)初始化参数列表
@@ -330,6 +330,7 @@ def get_SON_parameter_list(top_ocr_data, bottom_ocr_data, side_ocr_data, detaile
     dic_θ3 = {'parameter_name': 'θ3', 'maybe_data': [], 'maybe_data_num': 0, 'possible': [], 'OK': 0}
     θ3_max = 16
     θ3_min = 11
+    dic_Φ = {'parameter_name': 'Φ', 'maybe_data': [], 'maybe_data_num': 0, 'possible': [], 'OK': 0}
 
     # dic_D2 = {'parameter_name': 'D2', 'maybe_data': [], 'possible': []}
     # dic_E2 = {'parameter_name': 'E2', 'maybe_data': [], 'possible': []}
@@ -369,6 +370,7 @@ def get_SON_parameter_list(top_ocr_data, bottom_ocr_data, side_ocr_data, detaile
     SON_parameter_list.append(dic_θ1)
     SON_parameter_list.append(dic_θ2)
     SON_parameter_list.append(dic_θ3)
+    SON_parameter_list.append(dic_Φ)
 
     for i in range(len(top_ocr_data)):
         # if D_min <= top_ocr_data[i]['max_medium_min'][2] and top_ocr_data[i]['max_medium_min'][0] <= D_max:
@@ -402,6 +404,11 @@ def get_SON_parameter_list(top_ocr_data, bottom_ocr_data, side_ocr_data, detaile
             SON_parameter_list[9]['maybe_data'].append(top_ocr_data[i])
             SON_parameter_list[9]['maybe_data_num'] += 1
     for i in range(len(bottom_ocr_data)):
+        key_info = bottom_ocr_data[i].get('key_info', [])
+        has_phi = any(token == 'Φ' for group in key_info for token in group)
+        if has_phi or bottom_ocr_data[i].get('Absolutely') == 'pin_diameter':
+            SON_parameter_list[17]['maybe_data'].append(bottom_ocr_data[i])
+            SON_parameter_list[17]['maybe_data_num'] += 1
         # if D_min <= bottom_ocr_data[i]['max_medium_min'][2] and bottom_ocr_data[i]['max_medium_min'][0] <= D_max:
         #     SON_parameter_list[0]['maybe_data'].append(bottom_ocr_data[i])
         #     SON_parameter_list[0]['maybe_data_num'] += 1

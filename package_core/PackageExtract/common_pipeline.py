@@ -646,7 +646,7 @@ def finalize_pairs(L3):
     return L3
 
 
-def compute_qfp_parameters(L3):
+def compute_BGA_parameters(L3):
     """F4.9：根据配对结果计算 QFP/BGA 参数列表。"""
 
     top_serial_numbers_data = find_list(L3, "top_serial_numbers_data")
@@ -663,7 +663,7 @@ def compute_qfp_parameters(L3):
     bottom_border = find_list(L3, "bottom_border")
 
     nx, ny = _pairs_module.get_serial(top_serial_numbers_data, bottom_serial_numbers_data)
-    body_x, body_y = _pairs_module.get_QFP_body(
+    body_x, body_y = _pairs_module.get_body(
         yolox_pairs_top,
         top_yolox_pairs_length,
         yolox_pairs_bottom,
@@ -673,7 +673,7 @@ def compute_qfp_parameters(L3):
         top_ocr_data,
         bottom_ocr_data,
     )
-    _pairs_module.get_QFP_body(
+    _pairs_module.get_body(
         yolox_pairs_top,
         top_yolox_pairs_length,
         yolox_pairs_bottom,
@@ -684,7 +684,7 @@ def compute_qfp_parameters(L3):
         bottom_ocr_data,
     )
 
-    QFP_parameter_list = _pairs_module.get_QFP_parameter_list(
+    QFP_parameter_list = _pairs_module.get_BGA_parameter_list(
         top_ocr_data,
         bottom_ocr_data,
         side_ocr_data,
@@ -721,4 +721,3 @@ def compute_qfp_parameters(L3):
     QFP_parameter_list = _pairs_module.resort_parameter_list_2(QFP_parameter_list)
 
     return QFP_parameter_list, nx, ny
-

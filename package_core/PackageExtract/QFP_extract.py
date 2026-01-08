@@ -1,6 +1,6 @@
 # 外部文件：
 from package_core.PackageExtract.common_pipeline import (
-    compute_qfp_parameters,
+    compute_BGA_parameters,
     enrich_pairs_with_lines,
     extract_pin_serials,
     finalize_pairs,
@@ -85,7 +85,7 @@ def extract_package(package_classes, page_num):
         pad_x,pad_y
     '''
     # 语义对齐
-    QFP_parameter_list, nx, ny = compute_qfp_parameters(L3)
+    QFP_parameter_list, nx, ny = compute_BGA_parameters(L3)
     # 整理获得的参数
     parameter_list = get_QFP_parameter_data(QFP_parameter_list, nx, ny)
 
@@ -555,15 +555,23 @@ def find_QFP_parameter(L3):
 
     # (9)输出序号nx,ny和body_x、body_y
     nx, ny = get_serial(top_serial_numbers_data, bottom_serial_numbers_data)
-    body_x, body_y = get_QFP_body(yolox_pairs_top, top_yolox_pairs_length, yolox_pairs_bottom,
+    body_x, body_y = get_body(yolox_pairs_top, top_yolox_pairs_length, yolox_pairs_bottom,
                                   bottom_yolox_pairs_length, top_border, bottom_border, top_ocr_data,
                                   bottom_ocr_data)
-    get_QFP_body(yolox_pairs_top, top_yolox_pairs_length, yolox_pairs_bottom,
+    get_body(yolox_pairs_top, top_yolox_pairs_length, yolox_pairs_bottom,
                                   bottom_yolox_pairs_length, top_border, bottom_border, top_ocr_data,
                                   bottom_ocr_data)
     # (10)初始化参数列表
-    QFP_parameter_list = get_QFP_parameter_list(top_ocr_data, bottom_ocr_data, side_ocr_data, detailed_ocr_data,
+    QFP_parameter_list = get_BGA_parameter_list(top_ocr_data, bottom_ocr_data, side_ocr_data, detailed_ocr_data,
                                                 body_x, body_y)
+    # 使用 side 视图的最大/次大值先行推断 A 与 A1
+    A_candidate, A1_candidate = infer_side_high_pair(side_ocr_data)
+    if len(A_candidate) > 0:
+        QFP_parameter_list[4]['maybe_data'] = A_candidate
+        QFP_parameter_list[4]['maybe_data_num'] = len(A_candidate)
+    if len(A1_candidate) > 0:
+        QFP_parameter_list[5]['maybe_data'] = A1_candidate
+        QFP_parameter_list[5]['maybe_data_num'] = len(A1_candidate)
     # (11)整理参数列表
     QFP_parameter_list = resort_parameter_list_2(QFP_parameter_list)
     # 输出高

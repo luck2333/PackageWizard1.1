@@ -17,7 +17,7 @@ from package_core.PackageExtract.common_pipeline import (
 from package_core.PackageExtract.BGA_Function.BGA_cal_pin import find_pin
 import package_core.PackageExtract.get_pairs_data_present5_test as pairs_module
 from package_core.PackageExtract.common_pipeline import (
-    compute_qfp_parameters,  # (10) F4.9
+    compute_BGA_parameters,  # (10) F4.9
     enrich_pairs_with_lines,  # (3) F4.7
     # extract_pin_serials,      # (7) F4.8 [SKIPPED, F4.1-F4.5 已完成]
     finalize_pairs,  # (9) F4.8
@@ -156,12 +156,11 @@ def extract_BGA(package_classes):
     print("[F4.8] 整理配对结果 ... DONE")
 
     # (10) 语义对齐，生成参数候选 (F4.9)
-    QFP_parameter_list, nx, ny = compute_qfp_parameters(L3)  # [RUN]
+    QFP_parameter_list, nx, ny = compute_BGA_parameters(L3)  # [RUN]
     print("[F4.9] 语义对齐，生成参数候选 ... DONE")
 
     parameter_list = get_QFP_parameter_data(QFP_parameter_list, nx, ny)
     parameter_list = alter_QFP_parameter_data(parameter_list)
 
     return parameter_list
-
 
