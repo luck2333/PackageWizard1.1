@@ -564,6 +564,14 @@ def find_QFP_parameter(L3):
     # (10)初始化参数列表
     QFP_parameter_list = get_QFP_parameter_list(top_ocr_data, bottom_ocr_data, side_ocr_data, detailed_ocr_data,
                                                 body_x, body_y)
+    # 使用 side 视图的最大/次大值先行推断 A 与 A1
+    A_candidate, A1_candidate = infer_side_high_pair(side_ocr_data)
+    if len(A_candidate) > 0:
+        QFP_parameter_list[4]['maybe_data'] = A_candidate
+        QFP_parameter_list[4]['maybe_data_num'] = len(A_candidate)
+    if len(A1_candidate) > 0:
+        QFP_parameter_list[5]['maybe_data'] = A1_candidate
+        QFP_parameter_list[5]['maybe_data_num'] = len(A1_candidate)
     # (11)整理参数列表
     QFP_parameter_list = resort_parameter_list_2(QFP_parameter_list)
     # 输出高

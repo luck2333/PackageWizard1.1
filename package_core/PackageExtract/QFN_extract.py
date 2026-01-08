@@ -282,6 +282,7 @@ def get_QFN_parameter_list(top_ocr_data, bottom_ocr_data, side_ocr_data, detaile
     dic_θ3 = {'parameter_name': 'θ3', 'maybe_data': [], 'maybe_data_num': 0, 'possible': [], 'OK': 0}
     θ3_max = 16
     θ3_min = 11
+    dic_Φ = {'parameter_name': 'Φ', 'maybe_data': [], 'maybe_data_num': 0, 'possible': [], 'OK': 0}
 
     # dic_D2 = {'parameter_name': 'D2', 'maybe_data': [], 'possible': []}
     # dic_E2 = {'parameter_name': 'E2', 'maybe_data': [], 'possible': []}
@@ -323,6 +324,7 @@ def get_QFN_parameter_list(top_ocr_data, bottom_ocr_data, side_ocr_data, detaile
     QFN_parameter_list.append(dic_θ1)
     QFN_parameter_list.append(dic_θ2)
     QFN_parameter_list.append(dic_θ3)
+    QFN_parameter_list.append(dic_Φ)
 
     for i in range(len(top_ocr_data)):
         # if D_min <= top_ocr_data[i]['max_medium_min'][2] and top_ocr_data[i]['max_medium_min'][0] <= D_max:
@@ -356,6 +358,11 @@ def get_QFN_parameter_list(top_ocr_data, bottom_ocr_data, side_ocr_data, detaile
             QFN_parameter_list[9]['maybe_data'].append(top_ocr_data[i])
             QFN_parameter_list[9]['maybe_data_num'] += 1
     for i in range(len(bottom_ocr_data)):
+        key_info = bottom_ocr_data[i].get('key_info', [])
+        has_phi = any(token == 'Φ' for group in key_info for token in group)
+        if has_phi or bottom_ocr_data[i].get('Absolutely') == 'pin_diameter':
+            QFN_parameter_list[17]['maybe_data'].append(bottom_ocr_data[i])
+            QFN_parameter_list[17]['maybe_data_num'] += 1
         # if D_min <= bottom_ocr_data[i]['max_medium_min'][2] and bottom_ocr_data[i]['max_medium_min'][0] <= D_max:
         #     QFN_parameter_list[0]['maybe_data'].append(bottom_ocr_data[i])
         #     QFN_parameter_list[0]['maybe_data_num'] += 1
